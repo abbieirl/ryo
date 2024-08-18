@@ -6,6 +6,7 @@ use crate::r#type::{Type, TypeInfo};
 
 use crate::r#struct::Struct;
 use core::any::{type_name_of_val, Any};
+use core::cell::LazyCell;
 use core::fmt::{Debug, Formatter};
 
 pub trait Reflect: Any {
@@ -50,6 +51,7 @@ impl Debug for dyn Reflect {
 #[cfg(feature = "rtti")]
 impl Type for dyn Reflect {
     fn type_info() -> &'static TypeInfo {
+        static RTTI: LazyCell<&'static str> = LazyCell::new(Default::default);
         todo!()
     }
 }

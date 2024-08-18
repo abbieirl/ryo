@@ -26,8 +26,17 @@ impl Struct for Vec3 {
         }
     }
 
-    fn field_idx_mut(&mut self, idx: usize) -> Option<&mut dyn Reflect> {
-        match idx {
+    fn field_index(&self, index: usize) -> Option<&dyn Reflect> {
+        match index {
+            0 => Some(&self.x),
+            1 => Some(&self.y),
+            2 => Some(&self.z),
+            _ => None,
+        }
+    }
+
+    fn field_index_mut(&mut self, index: usize) -> Option<&mut dyn Reflect> {
+        match index {
             0 => Some(&mut self.x),
             1 => Some(&mut self.y),
             2 => Some(&mut self.z),

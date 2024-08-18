@@ -3,11 +3,9 @@ use core::any::TypeId;
 
 pub trait Struct: Reflect {
     fn field(&self, name: &str) -> Option<&dyn Reflect>;
-
     fn field_mut(&mut self, name: &str) -> Option<&mut dyn Reflect>;
-
-    fn field_idx_mut(&mut self, idx: usize) -> Option<&mut dyn Reflect>;
-
+    fn field_index(&self, index: usize) -> Option<&dyn Reflect>;
+    fn field_index_mut(&mut self, index: usize) -> Option<&mut dyn Reflect>;
     fn field_count(&self) -> usize;
 }
 
