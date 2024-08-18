@@ -40,7 +40,7 @@ impl dyn Reflect {
 
 impl Debug for dyn Reflect {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        write!(f, "Reflect({})", self.type_name())
+        f.write_str(self.type_name())
     }
 }
 
