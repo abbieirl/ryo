@@ -2,11 +2,16 @@
 use alloc::boxed::Box;
 
 use crate::r#struct::Struct;
-use core::any::Any;
+use core::any::{type_name_of_val, Any};
+use core::fmt::Debug;
 
 pub trait Reflect: Any {
     #[cfg(feature = "alloc")]
     fn into_any(self: Box<Self>) -> Box<dyn Any>;
+
+    fn type_name(&self) -> &'static str {
+        type_name_of_val(self)
+    }
 
     fn as_any(&self) -> &dyn Any;
     fn as_any_mut(&mut self) -> &mut dyn Any;
@@ -14,28 +19,28 @@ pub trait Reflect: Any {
     fn as_reflect_mut(&mut self) -> &mut dyn Reflect;
 }
 
-#[cfg(feature = "nightly")]
-impl Into<Box<dyn Any>> for Box<dyn Reflect> {
-    fn into(self) -> Box<dyn Any> {
-        self
-    }
-}
-
 impl dyn Reflect {
-    // pub fn downcast<T: Reflect>(self: Box<dyn Reflect>) -> Result<Box<T>, Box<dyn Reflect>> {
+    // #[cfg(feature = "alloc")]
+    // pub fn downcast<T: Reflect>(self: Box<dyn Reflect>) -> Result<Box<T>, Box<Self>> {
     //     self.into_any()
     //         .downcast()
-    //         .map_err(|any| any>)
+    //         .map_err(|any| any as Box<dyn Reflect>)
     // }
 
     #[inline]
     pub fn downcast_ref<T: Reflect>(&self) -> Option<&T> {
-        self.as_any().downcast_ref::<T>()
+        self.as_any().downcast_ref()
     }
 
     #[inline]
     pub fn downcast_mut<T: Reflect>(&mut self) -> Option<&mut T> {
-        self.as_any_mut().downcast_mut::<T>()
+        self.as_any_mut().downcast_mut()
+    }
+}
+
+impl Debug for dyn Reflect {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "Reflect({})", self.type_name())
     }
 }
 

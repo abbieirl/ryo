@@ -49,4 +49,7 @@ fn main() {
 
     let field = vec3.field_mut("x").unwrap();
     dbg!(field.downcast_mut::<f32>());
+
+    let reflect: &dyn Reflect = &vec3;
+    dbg!(reflect);
 }
