@@ -26,6 +26,15 @@ impl Struct for Vec3 {
         }
     }
 
+    fn field_idx_mut(&mut self, idx: usize) -> Option<&mut dyn Reflect> {
+        match idx {
+            0 => Some(&mut self.x),
+            1 => Some(&mut self.y),
+            2 => Some(&mut self.z),
+            _ => None,
+        }
+    }
+
     fn field_count(&self) -> usize {
         3
     }

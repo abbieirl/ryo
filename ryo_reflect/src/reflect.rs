@@ -1,19 +1,32 @@
+#[cfg(feature = "alloc")]
 use alloc::boxed::Box;
+
 use crate::r#struct::Struct;
-use core::any::{Any, TypeId};
+use core::any::Any;
 
 pub trait Reflect: Any {
+    #[cfg(feature = "alloc")]
     fn into_any(self: Box<Self>) -> Box<dyn Any>;
+
     fn as_any(&self) -> &dyn Any;
     fn as_any_mut(&mut self) -> &mut dyn Any;
     fn as_reflect(&self) -> &dyn Reflect;
     fn as_reflect_mut(&mut self) -> &mut dyn Reflect;
 }
 
-impl dyn Reflect {
-    pub fn downcast<T: Reflect>(self: Box<dyn Reflect>) -> Result<Box<T>, Box<dyn Reflect>> {
-        self.into_any().downcast().map_err(|any| {})
+#[cfg(feature = "nightly")]
+impl Into<Box<dyn Any>> for Box<dyn Reflect> {
+    fn into(self) -> Box<dyn Any> {
+        self
     }
+}
+
+impl dyn Reflect {
+    // pub fn downcast<T: Reflect>(self: Box<dyn Reflect>) -> Result<Box<T>, Box<dyn Reflect>> {
+    //     self.into_any()
+    //         .downcast()
+    //         .map_err(|any| any>)
+    // }
 
     #[inline]
     pub fn downcast_ref<T: Reflect>(&self) -> Option<&T> {
