@@ -3,7 +3,7 @@ use alloc::boxed::Box;
 
 use crate::r#struct::Struct;
 use core::any::{type_name_of_val, Any};
-use core::fmt::Debug;
+use core::fmt::{Debug, Formatter};
 
 pub trait Reflect: Any {
     #[cfg(feature = "alloc")]
@@ -39,7 +39,7 @@ impl dyn Reflect {
 }
 
 impl Debug for dyn Reflect {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.write_str(self.type_name())
     }
 }
