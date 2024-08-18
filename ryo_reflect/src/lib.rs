@@ -11,9 +11,11 @@ pub mod r#struct;
 pub mod r#type;
 
 pub mod prelude {
-    pub use crate::reflect::Reflect;
     pub use crate::r#struct::Struct;
+    pub use crate::reflect::Reflect;
 }
 
 #[cfg(feature = "derive")]
-pub use ryo_reflect_derive::Reflect;
+pub mod derive {
+    pub use ryo_reflect_derive::*;
+}
