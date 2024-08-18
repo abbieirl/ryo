@@ -1,3 +1,6 @@
+#[cfg(feature = "std")]
+use std::sync::LazyLock;
+
 #[cfg(feature = "alloc")]
 use alloc::boxed::Box;
 
@@ -6,7 +9,6 @@ use crate::r#type::{Type, TypeInfo};
 
 use crate::r#struct::Struct;
 use core::any::{type_name_of_val, Any};
-use core::cell::LazyCell;
 use core::fmt::{Debug, Formatter};
 
 pub trait Reflect: Any {
@@ -51,9 +53,8 @@ impl Debug for dyn Reflect {
 #[cfg(feature = "rtti")]
 impl Type for dyn Reflect {
     fn type_info() -> &'static TypeInfo {
-        // struct Wrap(u8);
-        // unsafe impl Sync for Wrap {}
-        // static RTTI: LazyCell<Wrap1> = LazyCell::new(Default::default);
+        #[cfg(feature = "std")]
+        static RTTI: LazyLock<u8> = LazyLock::new(Default::default);
         todo!()
     }
 }

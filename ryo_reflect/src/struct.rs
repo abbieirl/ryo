@@ -24,9 +24,3 @@ impl StructData {
         self.type_name
     }
 }
-
-#[derive(Debug)]
-pub struct FieldData {
-    type_id: TypeId,
-    name: &'static str
-}
