@@ -3,9 +3,12 @@
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
-#[cfg(feature = "derive")]
-pub use ryo_reflect_derive::Reflect;
-
 pub mod r#enum;
 pub mod reflect;
 pub mod r#struct;
+
+#[cfg(feature = "rtti")]
+pub mod r#type;
+
+#[cfg(feature = "derive")]
+pub use ryo_reflect_derive::Reflect;
