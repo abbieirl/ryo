@@ -1,10 +1,29 @@
-use ryo_reflect::{r#struct::Struct, reflect::Reflect};
+use core::any::Any;
+use ryo_reflect::prelude::*;
 
 #[derive(Default)]
 struct Vec3 {
     x: f32,
     y: f32,
     z: f32,
+}
+
+impl Reflect for Vec3 {
+    fn as_any(&self) -> &dyn Any {
+        self as &dyn Any
+    }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self as &mut dyn Any
+    }
+
+    fn as_reflect(&self) -> &dyn Reflect {
+        self
+    }
+
+    fn as_reflect_mut(&mut self) -> &mut dyn Reflect {
+        self
+    }
 }
 
 impl Struct for Vec3 {

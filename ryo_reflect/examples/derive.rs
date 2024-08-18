@@ -1,4 +1,4 @@
-use ryo_reflect_derive::Reflect;
+use ryo_reflect::derive::Reflect;
 
 #[derive(Default, Reflect)]
 struct Vec3 {

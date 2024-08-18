@@ -1,4 +1,4 @@
-use proc_macro::TokenStream;
+use proc_macro2::TokenStream;
 use syn::{Data, DeriveInput, Error, Fields};
 use syn::spanned::Spanned;
 use quote::quote;
@@ -55,7 +55,7 @@ pub(crate) fn derive_struct_input(input: DeriveInput) -> TokenStream {
                 #field_count
             }
         }
-    }.into()
+    }
 }
 
 fn field_impl(fields: &Fields) -> proc_macro2::TokenStream {

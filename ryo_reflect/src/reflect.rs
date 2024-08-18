@@ -1,20 +1,13 @@
 #[cfg(feature = "std")]
 use std::sync::LazyLock;
 
-#[cfg(feature = "alloc")]
-use alloc::boxed::Box;
-
 #[cfg(feature = "rtti")]
 use crate::r#type::{Type, TypeInfo};
 
-use crate::r#struct::Struct;
 use core::any::{type_name_of_val, Any};
 use core::fmt::{Debug, Formatter};
 
 pub trait Reflect: Any {
-    #[cfg(feature = "alloc")]
-    fn into_any(self: Box<Self>) -> Box<dyn Any>;
-
     fn type_name(&self) -> &'static str {
         type_name_of_val(self)
     }
@@ -59,39 +52,10 @@ impl Type for dyn Reflect {
     }
 }
 
-impl<T> Reflect for T
-where
-    T: Struct,
-{
-    fn into_any(self: Box<Self>) -> Box<dyn Any> {
-        self
-    }
-
-    fn as_any(&self) -> &dyn Any {
-        self as &dyn Any
-    }
-
-    fn as_any_mut(&mut self) -> &mut dyn Any {
-        self as &mut dyn Any
-    }
-
-    fn as_reflect(&self) -> &dyn Reflect {
-        self
-    }
-
-    fn as_reflect_mut(&mut self) -> &mut dyn Reflect {
-        self
-    }
-}
-
 macro_rules! impl_reflect {
     ($($t:ty),*) => {
         $(
             impl Reflect for $t {
-                fn into_any(self: Box<Self>) -> Box<dyn Any> {
-                    self
-                }
-
                 fn as_any(&self) -> &dyn Any {
                     self as &dyn Any
                 }

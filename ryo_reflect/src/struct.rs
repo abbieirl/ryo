@@ -10,12 +10,12 @@ pub trait Struct: Reflect {
 }
 
 #[derive(Debug)]
-pub struct StructData {
+pub struct StructInfo {
     type_id: TypeId,
     type_name: &'static str,
 }
 
-impl StructData {
+impl StructInfo {
     pub fn type_id(&self) -> TypeId {
         self.type_id
     }
