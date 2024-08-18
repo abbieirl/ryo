@@ -1,4 +1,4 @@
-use ryo_reflect::derive::Reflect;
+use ryo_reflect::prelude::*;
 
 #[derive(Default, Reflect)]
 struct Vec3 {
@@ -14,6 +14,6 @@ fn main() {
         z: 0.0,
     };
 
-    let reflect: &dyn ryo_reflect::reflect::Reflect = &vec3;
+    let reflect = vec3.as_reflect();
     dbg!(reflect);
 }

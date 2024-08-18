@@ -63,7 +63,7 @@ fn field_impl(fields: &Fields) -> proc_macro2::TokenStream {
         let ident = field.ident.clone().unwrap();
 
         quote! {
-            #ident => Some(&self.#ident),
+            stringify!(#ident) => Some(&self.#ident),
         }
     });
 
@@ -75,7 +75,7 @@ fn field_impl_mut(fields: &Fields) -> proc_macro2::TokenStream {
         let ident = field.ident.clone().unwrap();
 
         quote! {
-            #ident => Some(&mut self.#ident),
+            stringify!(#ident) => Some(&mut self.#ident),
         }
     });
 
