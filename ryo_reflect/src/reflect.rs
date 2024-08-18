@@ -51,7 +51,9 @@ impl Debug for dyn Reflect {
 #[cfg(feature = "rtti")]
 impl Type for dyn Reflect {
     fn type_info() -> &'static TypeInfo {
-        static RTTI: LazyCell<&'static str> = LazyCell::new(Default::default);
+        // struct Wrap(u8);
+        // unsafe impl Sync for Wrap {}
+        // static RTTI: LazyCell<Wrap1> = LazyCell::new(Default::default);
         todo!()
     }
 }
