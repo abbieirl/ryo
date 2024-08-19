@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["ryo_ecs", "ryo_reflect", "ryo_reflect_derive"]
+members = ["ryo_ecs", "ryo_reflect", "ryo_reflect_derive", "ryo_engine", "ryo_math"]
 
 [profile.release]
 codegen-units = 1
