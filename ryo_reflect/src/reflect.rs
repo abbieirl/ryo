@@ -47,7 +47,7 @@ impl Debug for dyn Reflect {
 impl Type for dyn Reflect {
     fn type_info() -> &'static TypeInfo {
         #[cfg(feature = "std")]
-        static RTTI: LazyLock<u8> = LazyLock::new(Default::default);
+        static _RTTI: LazyLock<u8> = LazyLock::new(Default::default);
         todo!()
     }
 }

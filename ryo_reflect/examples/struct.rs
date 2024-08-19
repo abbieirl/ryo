@@ -27,6 +27,14 @@ impl Reflect for Vec3 {
 }
 
 impl Struct for Vec3 {
+    fn as_struct(&self) -> &dyn Struct {
+        self
+    }
+
+    fn as_struct_mut(&mut self) -> &mut dyn Struct {
+        self
+    }
+
     fn field(&self, name: &str) -> Option<&dyn Reflect> {
         match name {
             "x" => Some(&self.x),
@@ -65,6 +73,22 @@ impl Struct for Vec3 {
 
     fn field_count(&self) -> usize {
         3
+    }
+
+    fn field_name(&self, index: usize) -> Option<&'static str> {
+        match index {
+            0 => Some("x"),
+            1 => Some("y"),
+            2 => Some("z"),
+            _ => None,
+        }
+    }
+
+    fn field_value(&self, index: usize) -> Option<&dyn Reflect> {
+        match index {
+            0 => self.x.as_reflect().downcast_ref::<f32>().map(|out| out.as_reflect()),
+            _ => None,
+        }
     }
 }
 

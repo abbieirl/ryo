@@ -19,10 +19,20 @@ pub(crate) fn derive_struct_input(input: DeriveInput) -> TokenStream {
     let field_index_impl = field_index_impl(&data_struct.fields);
     let field_index_mut_impl = field_index_mut_impl(&data_struct.fields);
     let field_count = data_struct.fields.len();
+    let field_name = field_name(&data_struct.fields);
+    let field_value = field_value(&data_struct.fields);
 
     quote! {
         #[automatically_derived]
         impl ::ryo_reflect::r#struct::Struct for #ident {
+            fn as_struct(&self) -> &dyn ::ryo_reflect::r#struct::Struct {
+                self
+            }
+
+            fn as_struct_mut(&mut self) -> &mut dyn ::ryo_reflect::r#struct::Struct {
+                self
+            }
+
             fn field(&self, name: &str) -> Option<&dyn ::ryo_reflect::reflect::Reflect> {
                 match name {
                     #field_impl
@@ -53,6 +63,20 @@ pub(crate) fn derive_struct_input(input: DeriveInput) -> TokenStream {
 
             fn field_count(&self) -> usize {
                 #field_count
+            }
+
+            fn field_name(&self, index: usize) -> Option<&'static str> {
+                match index {
+                    #field_name
+                    _ => None,
+                }
+            }
+
+            fn field_value(&self, index: usize) -> Option<&dyn ::ryo_reflect::reflect::Reflect> {
+                match index {
+                    #field_value
+                    _ => None,
+                }
             }
         }
     }
@@ -100,6 +124,31 @@ fn field_index_mut_impl(fields: &Fields) -> proc_macro2::TokenStream {
         
         quote! {
             #index => Some(&mut self.#ident),
+        }
+    });
+
+    quote!(#(#field_index_mut_impl)*)
+}
+
+fn field_name(fields: &Fields) -> proc_macro2::TokenStream {
+    let field_index_mut_impl = fields.iter().enumerate().map(|(index, field)| {
+        let ident = field.ident.clone().unwrap();
+        
+        quote! {
+            #index => Some(stringify!(#ident)),
+        }
+    });
+
+    quote!(#(#field_index_mut_impl)*)
+}
+
+fn field_value(fields: &Fields) -> proc_macro2::TokenStream {
+    let field_index_mut_impl = fields.iter().enumerate().map(|(index, field)| {
+        let ident = field.ident.clone().unwrap();
+        let ty = &field.ty;
+        
+        quote! {
+            #index => Some(self.#ident.as_any().downcast_ref::<Self>().unwrap().#ident.as_reflect()),
         }
     });
 

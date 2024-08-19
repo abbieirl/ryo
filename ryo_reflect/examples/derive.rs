@@ -14,6 +14,6 @@ fn main() {
         z: 0.0,
     };
 
-    let reflect = vec3.as_reflect();
+    let reflect = vec3.as_struct();
     dbg!(reflect);
 }
