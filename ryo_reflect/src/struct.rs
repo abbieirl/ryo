@@ -41,19 +41,3 @@ impl IndexMut<&str> for dyn Struct {
         self.field_mut(index).expect("Not a field")
     }
 }
-
-impl Debug for dyn Struct {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        let mut debug = f.debug_struct(self.type_name());
-
-        (0..self.field_count()).into_iter().for_each(|index| {
-            // SAFETY: index is in range
-            let name = unsafe { self.field_name(index).unwrap_unchecked() };
-            let value = unsafe { self.field_value(index).unwrap().as_any() };
-
-            debug.field(name, &value as &dyn Debug);
-        });
-
-        debug.finish()
-    }
-}

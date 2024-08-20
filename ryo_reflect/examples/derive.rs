@@ -15,11 +15,12 @@ fn main() {
     };
 
     let reflect = vec3.as_struct();
-    dbg!(reflect.field("x").unwrap());
     dbg!(reflect.type_name());
     dbg!(reflect.type_path());
+    dbg!(&reflect["x"].downcast_ref::<f32>().unwrap());
 
     let number = 45.as_reflect();
     dbg!(number.type_name());
     dbg!(number.type_path());
+
 }

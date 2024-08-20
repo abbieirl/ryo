@@ -9,6 +9,10 @@ struct Vec3 {
 }
 
 impl Reflect for Vec3 {
+    fn type_name(&self) -> &'static str {
+        "Vec3"
+    }
+
     fn as_any(&self) -> &dyn Any {
         self as &dyn Any
     }

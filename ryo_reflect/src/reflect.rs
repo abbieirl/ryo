@@ -39,12 +39,6 @@ impl dyn Reflect {
     }
 }
 
-impl Debug for dyn Reflect {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        f.write_str(self.type_name())
-    }
-}
-
 #[cfg(feature = "rtti")]
 impl Type for dyn Reflect {
     fn type_info() -> &'static TypeInfo {
