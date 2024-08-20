@@ -13,6 +13,10 @@ impl Reflect for Vec3 {
         "Vec3"
     }
 
+    fn into_any(self: Box<Self>) -> Box<dyn Any> {
+        self
+    }
+
     fn as_any(&self) -> &dyn Any {
         self as &dyn Any
     }
@@ -104,8 +108,5 @@ fn main() {
     };
 
     let field = vec3.field_mut("x").unwrap();
-    dbg!(field);
-
     let reflect: &dyn Reflect = &vec3;
-    dbg!(reflect);
 }

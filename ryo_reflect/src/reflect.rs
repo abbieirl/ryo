@@ -4,8 +4,13 @@ use std::sync::LazyLock;
 #[cfg(feature = "rtti")]
 use crate::r#type::{Type, TypeInfo};
 
-use core::any::{type_name, Any};
-use core::fmt::{Debug, Formatter};
+#[cfg(feature = "std")]
+use std::boxed::Box;
+
+#[cfg(all(feature = "alloc", not(feature = "std")))]
+use alloc::boxed::Box;
+
+use core::any::{type_name, Any, TypeId};
 
 pub trait Reflect: Any {
     fn type_name(&self) -> &'static str;
@@ -14,6 +19,9 @@ pub trait Reflect: Any {
         type_name::<Self>()
     }
 
+    #[cfg(any(feature = "std", feature = "alloc"))]
+    fn into_any(self: Box<Self>) -> Box<dyn Any>;
+
     fn as_any(&self) -> &dyn Any;
     fn as_any_mut(&mut self) -> &mut dyn Any;
     fn as_reflect(&self) -> &dyn Reflect;
@@ -21,12 +29,18 @@ pub trait Reflect: Any {
 }
 
 impl dyn Reflect {
-    // #[cfg(feature = "alloc")]
-    // pub fn downcast<T: Reflect>(self: Box<dyn Reflect>) -> Result<Box<T>, Box<Self>> {
-    //     self.into_any()
-    //         .downcast()
-    //         .map_err(|any| any as Box<dyn Reflect>)
-    // }
+    pub fn is<T: Reflect>(&self) -> bool {
+        self.type_id() == TypeId::of::<T>()
+    }
+
+    #[cfg(any(feature = "std", feature = "alloc"))]
+    pub fn downcast<T: Reflect>(self: Box<Self>) -> Result<Box<T>, Box<Self>> {
+        if self.is::<T>() {
+            Ok(unsafe { self.into_any().downcast().unwrap_unchecked() })
+        } else {
+            Err(self)
+        }
+    }
 
     #[inline]
     pub fn downcast_ref<T: Reflect>(&self) -> Option<&T> {
@@ -54,6 +68,16 @@ macro_rules! impl_reflect {
             impl Reflect for $t {
                 fn type_name(&self) -> &'static str {
                     stringify!($t)
+                }
+
+                #[cfg(feature = "std")]
+                fn into_any(self: Box<Self>) -> Box<dyn Any> {
+                    self
+                }
+
+                #[cfg(all(feature = "alloc", not(feature = "std")))]
+                fn into_any(self: Box<Self>) -> Box<&dyn Any> {
+                    self
                 }
 
                 fn as_any(&self) -> &dyn Any {
