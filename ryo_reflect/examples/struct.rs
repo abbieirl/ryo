@@ -86,7 +86,7 @@ impl Struct for Vec3 {
 
     fn field_value(&self, index: usize) -> Option<&dyn Reflect> {
         match index {
-            0 => self.x.as_reflect().downcast_ref::<f32>().map(|out| out.as_reflect()),
+            0 => Some(self.x.as_reflect()),
             _ => None,
         }
     }

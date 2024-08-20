@@ -4,12 +4,14 @@ use std::sync::LazyLock;
 #[cfg(feature = "rtti")]
 use crate::r#type::{Type, TypeInfo};
 
-use core::any::{type_name_of_val, Any};
+use core::any::{type_name, Any};
 use core::fmt::{Debug, Formatter};
 
 pub trait Reflect: Any {
-    fn type_name(&self) -> &'static str {
-        type_name_of_val(self)
+    fn type_name(&self) -> &'static str;
+
+    fn type_path(&self) -> &'static str {
+        type_name::<Self>()
     }
 
     fn as_any(&self) -> &dyn Any;
@@ -56,6 +58,10 @@ macro_rules! impl_reflect {
     ($($t:ty),*) => {
         $(
             impl Reflect for $t {
+                fn type_name(&self) -> &'static str {
+                    stringify!($t)
+                }
+
                 fn as_any(&self) -> &dyn Any {
                     self as &dyn Any
                 }

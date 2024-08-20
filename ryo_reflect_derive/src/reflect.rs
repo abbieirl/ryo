@@ -17,6 +17,10 @@ pub(crate) fn derive_reflect_input(input: DeriveInput) -> TokenStream {
     quote! {
         #[automatically_derived]
         impl ::ryo_reflect::reflect::Reflect for #ident {
+            fn type_name(&self) -> &'static str {
+                stringify!(#ident)
+            }
+
             fn as_any(&self) -> &dyn ::core::any::Any {
                 self as &dyn ::core::any::Any
             }
