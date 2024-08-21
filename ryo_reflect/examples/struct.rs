@@ -91,13 +91,6 @@ impl Struct for Vec3 {
             _ => None,
         }
     }
-
-    fn field_value(&self, index: usize) -> Option<&dyn Reflect> {
-        match index {
-            0 => Some(self.x.as_reflect()),
-            _ => None,
-        }
-    }
 }
 
 fn main() {

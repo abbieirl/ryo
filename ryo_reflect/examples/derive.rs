@@ -19,8 +19,9 @@ fn main() {
     dbg!(reflect.type_path());
     dbg!(&reflect["x"].downcast_ref::<f32>().unwrap());
 
+    dbg!(reflect.layout());
+
     let number = 45.as_reflect();
     dbg!(number.type_name());
     dbg!(number.type_path());
-
 }

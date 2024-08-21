@@ -1,17 +1,16 @@
 use crate::reflect::Reflect;
-use core::fmt::{Debug, Formatter};
 use core::ops::{Index, IndexMut};
 
 pub trait Struct: Reflect {
     fn as_struct(&self) -> &dyn Struct;
     fn as_struct_mut(&mut self) -> &mut dyn Struct;
+
     fn field(&self, name: &str) -> Option<&dyn Reflect>;
     fn field_mut(&mut self, name: &str) -> Option<&mut dyn Reflect>;
     fn field_index(&self, index: usize) -> Option<&dyn Reflect>;
     fn field_index_mut(&mut self, index: usize) -> Option<&mut dyn Reflect>;
     fn field_count(&self) -> usize;
     fn field_name(&self, index: usize) -> Option<&'static str>;
-    fn field_value(&self, index: usize) -> Option<&dyn Reflect>;
 }
 
 impl Index<usize> for dyn Struct {

@@ -20,7 +20,6 @@ pub(crate) fn derive_struct_input(input: DeriveInput) -> TokenStream {
     let field_index_mut_impl = field_index_mut_impl(&data_struct.fields);
     let field_count = data_struct.fields.len();
     let field_name = field_name(&data_struct.fields);
-    let field_value = field_value(&data_struct.fields);
 
     quote! {
         #[automatically_derived]
@@ -68,13 +67,6 @@ pub(crate) fn derive_struct_input(input: DeriveInput) -> TokenStream {
             fn field_name(&self, index: usize) -> Option<&'static str> {
                 match index {
                     #field_name
-                    _ => None,
-                }
-            }
-
-            fn field_value(&self, index: usize) -> Option<&dyn ::ryo_reflect::reflect::Reflect> {
-                match index {
-                    #field_value
                     _ => None,
                 }
             }
@@ -136,19 +128,6 @@ fn field_name(fields: &Fields) -> proc_macro2::TokenStream {
         
         quote! {
             #index => Some(stringify!(#ident)),
-        }
-    });
-
-    quote!(#(#field_index_mut_impl)*)
-}
-
-fn field_value(fields: &Fields) -> proc_macro2::TokenStream {
-    let field_index_mut_impl = fields.iter().enumerate().map(|(index, field)| {
-        let ident = field.ident.clone().unwrap();
-        let ty = &field.ty;
-        
-        quote! {
-            #index => Some(self.#ident.as_any().downcast_ref::<Self>().unwrap().#ident.as_reflect()),
         }
     });
 
