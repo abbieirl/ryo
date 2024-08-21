@@ -10,35 +10,16 @@ use std::boxed::Box;
 #[cfg(all(feature = "alloc", not(feature = "std")))]
 use alloc::boxed::Box;
 
-use core::alloc::Layout;
 use core::any::{type_name, Any, TypeId};
 
 pub trait Reflect: Any {
-    /// Returns the name of a type as a string slice.
+    /// Returns the name of this type as a string slice.
     fn type_name(&self) -> &'static str;
 
-    /// Returns the path of a type as a string slice.
+    /// Returns the path of this type as a string slice.
     #[inline]
     fn type_path(&self) -> &'static str {
         type_name::<Self>()
-    }
-
-    /// Returns the size of the reflect associated type.
-    #[inline]
-    fn size_of(&self) -> usize {
-        size_of_val(self)
-    }
-
-    /// Returns the alignment of the reflect associated type.
-    #[inline]
-    fn align_of(&self) -> usize {
-        align_of_val(self)
-    }
-
-    /// Returns the size and alignment together as a `Layout`.
-    #[inline]
-    fn layout(&self) -> Layout {
-        unsafe { Layout::from_size_align_unchecked(self.size_of(), self.align_of()) }
     }
 
     #[cfg(any(feature = "std", feature = "alloc"))]
