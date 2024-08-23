@@ -8,8 +8,8 @@ ryo_reflect_derive = { path = "../ryo_reflect_derive", optional = true }
 
 [features]
 std = ["alloc"]
-rtti = ["alloc"]
+rtti = []
 alloc = []
 derive = ["dep:ryo_reflect_derive"]
 nightly = []
-default = ["std", "alloc", "derive", "rtti"]
+default = ["std", "derive", "rtti"]

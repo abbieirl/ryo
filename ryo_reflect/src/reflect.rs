@@ -1,6 +1,3 @@
-#[cfg(feature = "std")]
-use std::sync::LazyLock;
-
 #[cfg(feature = "rtti")]
 use crate::r#type::{Type, TypeInfo};
 
@@ -57,10 +54,11 @@ impl dyn Reflect {
 impl Type for dyn Reflect {
     fn type_info() -> &'static TypeInfo {
         #[cfg(feature = "std")]
-        static _RTTI: LazyLock<u8> = LazyLock::new(Default::default);
+        static _RTTI: std::sync::LazyLock<TypeInfo> = std::sync::LazyLock::new(Default::default);
 
-        #[cfg(all(feature = "alloc", not(feature = "std")))]
-        static _RTTI: LazyCell<u8> = LazyCell::new(Default::default);
+        #[cfg(not(feature = "std"))]
+        static mut _RTTI: core::cell::LazyCell<TypeInfo> =
+            core::cell::LazyCell::new(Default::default);
 
         todo!()
     }

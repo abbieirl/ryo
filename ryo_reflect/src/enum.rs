@@ -11,13 +11,13 @@ pub trait Enum: Reflect {
 impl Index<usize> for dyn Enum {
     type Output = dyn Reflect;
 
-    fn index(&self, index: usize) -> &Self::Output {
+    fn index(&self, _index: usize) -> &Self::Output {
         todo!()
     }
 }
 
 impl IndexMut<usize> for dyn Enum {
-    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+    fn index_mut(&mut self, _index: usize) -> &mut Self::Output {
         todo!()
     }
 }

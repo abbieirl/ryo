@@ -1,3 +1,5 @@
+use std::any::type_name_of_val;
+
 use ryo_reflect::prelude::*;
 
 #[derive(Default, Reflect)]
@@ -22,4 +24,6 @@ fn main() {
     let number = 45.as_reflect();
     dbg!(number.type_name());
     dbg!(number.type_path());
+
+    dbg!(type_name_of_val(number));
 }
