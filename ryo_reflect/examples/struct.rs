@@ -100,6 +100,6 @@ fn main() {
         z: 0.0,
     };
 
-    let field = vec3.field_mut("x").unwrap();
-    let reflect: &dyn Reflect = &vec3;
+    let _field = vec3.field_mut("x").unwrap();
+    let _reflect = vec3.as_reflect();
 }
