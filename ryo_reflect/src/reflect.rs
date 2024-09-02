@@ -1,10 +1,8 @@
 #[cfg(feature = "rtti")]
 use crate::r#type::{Type, TypeInfo};
 
-#[cfg(feature = "alloc")]
-use alloc::boxed::Box;
-
 use core::any::{type_name, Any, TypeId};
+use std::sync::LazyLock;
 
 pub trait Reflect: Any {
     /// Returns the name of this type as a string slice.
@@ -16,9 +14,6 @@ pub trait Reflect: Any {
         type_name::<Self>()
     }
 
-    #[cfg(feature = "alloc")]
-    fn into_any(self: Box<Self>) -> Box<dyn Any>;
-
     fn as_any(&self) -> &dyn Any;
     fn as_any_mut(&mut self) -> &mut dyn Any;
     fn as_reflect(&self) -> &dyn Reflect;
@@ -28,15 +23,6 @@ pub trait Reflect: Any {
 impl dyn Reflect {
     pub fn is<T: Reflect>(&self) -> bool {
         self.type_id() == TypeId::of::<T>()
-    }
-
-    #[cfg(any(feature = "std", feature = "alloc"))]
-    pub fn downcast<T: Reflect>(self: Box<Self>) -> Result<Box<T>, Box<Self>> {
-        if self.is::<T>() {
-            Ok(unsafe { self.into_any().downcast().unwrap_unchecked() })
-        } else {
-            Err(self)
-        }
     }
 
     #[inline]
@@ -53,12 +39,7 @@ impl dyn Reflect {
 #[cfg(feature = "rtti")]
 impl Type for dyn Reflect {
     fn type_info() -> &'static TypeInfo {
-        #[cfg(feature = "std")]
-        static _RTTI: std::sync::LazyLock<TypeInfo> = std::sync::LazyLock::new(Default::default);
-
-        #[cfg(not(feature = "std"))]
-        static mut _RTTI: core::cell::LazyCell<TypeInfo> =
-            core::cell::LazyCell::new(Default::default);
+        static _RTTI: LazyLock<TypeInfo> = LazyLock::new(Default::default);
 
         todo!()
     }
@@ -71,12 +52,6 @@ macro_rules! impl_reflect {
                 #[inline]
                 fn type_name(&self) -> &'static str {
                     stringify!($t)
-                }
-
-                #[inline(always)]
-                #[cfg(feature = "alloc")]
-                fn into_any(self: Box<Self>) -> Box<dyn Any> {
-                    self
                 }
 
                 #[inline(always)]
@@ -106,6 +81,6 @@ macro_rules! impl_reflect {
 impl_reflect!(i8, i16, i32, i64, i128, isize);
 impl_reflect!(u8, u16, u32, u64, u128, usize);
 impl_reflect!(f32, f64);
-impl_reflect!(char);
+impl_reflect!(char, &'static str);
 impl_reflect!(bool);
 impl_reflect!(());

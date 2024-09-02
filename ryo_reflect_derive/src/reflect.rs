@@ -23,18 +23,6 @@ pub(crate) fn derive_reflect_input(input: DeriveInput) -> TokenStream {
             }
 
             #[inline(always)]
-            #[cfg(feature = "std")]
-            fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn ::core::any::Any> {
-                self
-            }
-
-            #[inline(always)]
-            #[cfg(all(feature = "alloc", not(feature = "std")))]
-            fn into_any(self: Box<Self>) -> ::alloc::boxed::Box<dyn ::core::any::Any> {
-                self
-            }
-
-            #[inline(always)]
             fn as_any(&self) -> &dyn ::core::any::Any {
                 self as &dyn ::core::any::Any
             }

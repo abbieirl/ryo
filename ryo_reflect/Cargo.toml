@@ -7,9 +7,6 @@ edition = "2021"
 ryo_reflect_derive = { path = "../ryo_reflect_derive", optional = true }
 
 [features]
-std = ["alloc"]
 rtti = []
-alloc = []
 derive = ["dep:ryo_reflect_derive"]
-nightly = []
-default = ["std", "derive", "rtti"]
+default = ["derive", "rtti"]
