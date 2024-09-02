@@ -1,7 +1,7 @@
 #[cfg(feature = "rtti")]
 use crate::r#type::{Type, TypeInfo};
 
-use core::any::{type_name, Any, TypeId};
+use core::any::{type_name, Any};
 use std::sync::LazyLock;
 
 pub trait Reflect: Any {
@@ -21,10 +21,6 @@ pub trait Reflect: Any {
 }
 
 impl dyn Reflect {
-    pub fn is<T: Reflect>(&self) -> bool {
-        self.type_id() == TypeId::of::<T>()
-    }
-
     #[inline]
     pub fn downcast_ref<T: Reflect>(&self) -> Option<&T> {
         self.as_any().downcast_ref()
