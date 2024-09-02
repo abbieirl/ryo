@@ -39,7 +39,7 @@ where
 {
     type Output = T;
 
-    fn distance(self, rhs: Self) -> Self::Output {
+    fn distance(self, _rhs: Self) -> Self::Output {
         todo!()
     }
 }
