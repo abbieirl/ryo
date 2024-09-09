@@ -1,5 +1,5 @@
-use core::ops::{Index, IndexMut};
 use crate::reflect::Reflect;
+use core::ops::{Index, IndexMut};
 
 pub trait Enum: Reflect {
     fn as_enum(&self) -> &dyn Enum;

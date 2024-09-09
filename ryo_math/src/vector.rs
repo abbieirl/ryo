@@ -34,22 +34,15 @@ macro_rules! impl_sum {
             impl<const D: usize> Sum for Vector<$t, D> {
                 type Output = $t;
 
+                #[inline]
                 fn sum(self) -> Self::Output {
                     let (prefix, middle, suffix) = self.0.as_simd();
 
-                    // let sums = Simd::from_array([
-                    //     prefix.iter().copied().sum(),
-                    //     Default::default(),
-                    //     Default::default(),
-                    //     suffix.iter().copied().sum(),
-                    // ]);
-
-                    let mut sums = Simd::from_array([Default::default(); sse_lanes::<$t>()]);
+                    let mut sums = Simd::from_array([Default::default(); simd_lanes::<$t>()]);
                     sums[0] = prefix.iter().copied().sum();
                     sums[1] = suffix.iter().copied().sum();
 
-                    let sums = middle.iter().copied().fold(sums, Simd::add);
-                    sums.reduce_sum()
+                    middle.iter().copied().fold(sums, Simd::add).reduce_sum()
                 }
             }
         )*
@@ -60,15 +53,33 @@ impl_sum!(f32, f64);
 impl_sum!(u8, u16, u32, u64);
 impl_sum!(i8, i16, i32, i64);
 
-const fn sse_lanes<T>() -> usize
-where
-    T: SimdElement,
-{
-    match core::mem::size_of::<T>() {
-        1 => 64, // 128 / 1 = 128, but the largest supported lane count is 64
-        2 => 64, // 128 / 2 = 64
-        4 => 32, // 128 / 4 = 32
-        8 => 16, // 128 / 8 = 16
-        _ => 1,  // Fallback
+// TODO: check and impl all simd extensions
+const fn simd_lanes<T: SimdElement>() -> usize {
+    if cfg!(target_feature = "avx512f") {
+        avx512_lanes::<T>()
+    } else if cfg!(target_feature = "avx") {
+        avx_lanes::<T>()
+    } else {
+        sse_lanes::<T>()
+    }
+}
+
+const fn sse_lanes<T: SimdElement>() -> usize {
+    min_const(128 / size_of::<T>(), 64)
+}
+
+const fn avx_lanes<T: SimdElement>() -> usize {
+    min_const(256 / size_of::<T>(), 64)
+}
+
+const fn avx512_lanes<T: SimdElement>() -> usize {
+    min_const(512 / size_of::<T>(), 64)
+}
+
+const fn min_const(a: usize, b: usize) -> usize {
+    if a < b {
+        a
+    } else {
+        b
     }
 }
