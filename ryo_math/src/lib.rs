@@ -1,6 +1,5 @@
-#![no_std]
+// #![no_std]
+#![feature(portable_simd)]
+#![feature(core_intrinsics)]
 
-pub mod number;
-pub mod ops;
 pub mod vector;
-pub mod matrix;
