@@ -34,7 +34,7 @@ macro_rules! impl_sum {
             impl<const D: usize> Sum for Vector<$t, D> {
                 type Output = $t;
 
-                #[inline]
+                #[inline(never)]
                 fn sum(self) -> Self::Output {
                     let (prefix, middle, suffix) = self.0.as_simd();
 
@@ -54,8 +54,8 @@ impl_sum!(u8, u16, u32, u64);
 impl_sum!(i8, i16, i32, i64);
 
 // TODO: check and impl all simd extensions
-const fn simd_lanes<T: SimdElement>() -> usize {
-    if cfg!(target_feature = "avx512f") {
+pub const fn simd_lanes<T: SimdElement>() -> usize {
+    if cfg!(target_cpu = "") {
         avx512_lanes::<T>()
     } else if cfg!(target_feature = "avx") {
         avx_lanes::<T>()
