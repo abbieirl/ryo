@@ -3,11 +3,9 @@ resolver = "2"
 members = [
     "ryo_ecs",
     "ryo_engine",
-    "ryo_math",
     "ryo_reflect",
     "ryo_reflect_derive",
     "ryo_wgpu",
-    "ryo_winit",
 ]
 
 [profile.release]

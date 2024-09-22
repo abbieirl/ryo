@@ -1,5 +1,4 @@
-use std::any::type_name_of_val;
-
+use core::any::type_name_of_val;
 use ryo_reflect::prelude::*;
 
 #[derive(Default, Reflect)]
