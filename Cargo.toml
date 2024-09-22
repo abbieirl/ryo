@@ -5,7 +5,7 @@ members = [
     "ryo_engine",
     "ryo_reflect",
     "ryo_reflect_derive",
-    "ryo_wgpu",
+    "ryo_wgpu", "ryo_winit",
 ]
 
 [profile.release]
