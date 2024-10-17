@@ -1,5 +1,6 @@
-use crate::{plugin::Plugin, runner::Runner};
+use crate::{module::Module, runner::Runner};
 use core::mem::take;
+use ryo_ecs::system::System;
 
 #[derive(Debug, Default)]
 pub struct Engine {
@@ -7,12 +8,14 @@ pub struct Engine {
 }
 
 impl Engine {
-    pub fn add_plugin(&mut self, plugin: impl Plugin) -> &mut Self {
-        plugin.build(self);
+    pub fn add_module(&mut self, module: impl Module) -> &mut Self {
+        module.build(self);
         self
     }
 
-    pub fn add_system() {}
+    pub fn add_system(&mut self, _system: impl System) -> &mut Self {
+        self
+    }
 
     pub fn set_runner(&mut self, runner: impl Runner) -> &mut Self {
         self.runner = Box::new(runner);

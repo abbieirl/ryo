@@ -18,7 +18,7 @@ where
 
 impl Default for Box<dyn Runner> {
     fn default() -> Self {
-        Box::new(default_runner)
+        Box::new(|_engine| todo!())
     }
 }
 
@@ -26,8 +26,4 @@ impl Debug for dyn Runner {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         f.write_str(type_name_of_val(self))
     }
-}
-
-pub fn default_runner(mut _engine: Engine) {
-    todo!()
 }

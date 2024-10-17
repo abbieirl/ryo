@@ -1,5 +1,5 @@
 use crate::engine::Engine;
 
-pub trait Plugin {
+pub trait Module {
     fn build(&self, engine: &mut Engine);
 }

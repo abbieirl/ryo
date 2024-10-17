@@ -1247,6 +1247,9 @@ version = "0.1.0"
 [[package]]
 name = "ryo_engine"
 version = "0.1.0"
+dependencies = [
+ "ryo_ecs",
+]
 
 [[package]]
 name = "ryo_reflect"
