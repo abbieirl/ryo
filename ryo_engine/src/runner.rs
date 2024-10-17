@@ -18,7 +18,7 @@ where
 
 impl Default for Box<dyn Runner> {
     fn default() -> Self {
-        Box::new(|_engine| todo!())
+        Box::new(|engine| engine.systems.iter().for_each(|_system| {}))
     }
 }
 

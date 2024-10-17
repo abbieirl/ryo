@@ -1,10 +1,12 @@
-use crate::{module::Module, runner::Runner};
+use crate::{Module, Runner};
 use core::mem::take;
 use ryo_ecs::system::System;
+use std::sync::Arc;
 
 #[derive(Debug, Default)]
 pub struct Engine {
     runner: Box<dyn Runner>,
+    pub(crate) systems: Vec<Arc<dyn System>>,
 }
 
 impl Engine {
@@ -13,7 +15,8 @@ impl Engine {
         self
     }
 
-    pub fn add_system(&mut self, _system: impl System) -> &mut Self {
+    pub fn add_system(&mut self, system: impl System) -> &mut Self {
+        self.systems.push(Arc::new(system));
         self
     }
 
