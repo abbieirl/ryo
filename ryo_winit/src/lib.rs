@@ -18,13 +18,17 @@ impl Module for WinitModule {
 
 impl ApplicationHandler for EngineWrapper {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
-        let window = event_loop
-            .create_window(Window::default_attributes())
-            .unwrap();
-
         Resources::get_mut::<WindowManager>()
             .unwrap()
-            .add_window(window);
+            .0
+            .iter_mut()
+            .for_each(|(window, handle)| {
+                *handle = Some(Box::new(
+                    event_loop
+                        .create_window(Window::default_attributes().with_title(&window.title))
+                        .unwrap(),
+                ));
+            });
     }
 
     fn window_event(
