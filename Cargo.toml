@@ -1,15 +1,14 @@
 [workspace]
 resolver = "2"
-members = [
+members = [ "ryo",
     "ryo_ecs",
     "ryo_engine",
     "ryo_reflect",
     "ryo_reflect_derive",
-    "ryo_wgpu",
+    "ryo_wgpu", "ryo_window",
     "ryo_winit",
 ]
 
 [profile.release]
 codegen-units = 1
-strip = true
 lto = true

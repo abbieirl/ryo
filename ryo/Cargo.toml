@@ -1,9 +1,10 @@
 [package]
-name = "ryo_winit"
+name = "ryo"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-winit = "0.30.5"
 ryo_engine = { path = "../ryo_engine" }
+ryo_ecs = { path = "../ryo_ecs" }
 ryo_window = { path = "../ryo_window" }
+ryo_winit = { path = "../ryo_winit" }

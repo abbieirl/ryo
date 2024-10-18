@@ -1,6 +1,5 @@
-use ryo_engine::engine::Engine;
+use ryo_engine::Engine;
 
 fn main() {
-    let mut engine = Engine::default();
-    engine.run();
+    Engine::default().run();
 }

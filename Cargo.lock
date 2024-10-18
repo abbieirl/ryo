@@ -1241,6 +1241,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "ryo"
+version = "0.1.0"
+dependencies = [
+ "ryo_ecs",
+ "ryo_engine",
+ "ryo_window",
+ "ryo_winit",
+]
+
+[[package]]
 name = "ryo_ecs"
 version = "0.1.0"
 
@@ -1275,9 +1285,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "ryo_window"
+version = "0.1.0"
+dependencies = [
+ "ryo_engine",
+]
+
+[[package]]
 name = "ryo_winit"
 version = "0.1.0"
 dependencies = [
+ "ryo_engine",
+ "ryo_window",
  "winit",
 ]
 

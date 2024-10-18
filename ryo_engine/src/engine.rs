@@ -25,6 +25,10 @@ impl Engine {
         self
     }
 
+    pub fn systems(&self) -> &[Arc<dyn System>] {
+        &self.systems
+    }
+
     pub fn run(&mut self) {
         let mut engine = take(self);
         let runner = take(&mut engine.runner);
