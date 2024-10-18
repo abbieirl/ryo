@@ -1246,6 +1246,7 @@ version = "0.1.0"
 dependencies = [
  "ryo_ecs",
  "ryo_engine",
+ "ryo_wgpu",
  "ryo_window",
  "ryo_winit",
 ]
@@ -1281,6 +1282,7 @@ dependencies = [
 name = "ryo_wgpu"
 version = "0.1.0"
 dependencies = [
+ "ryo_engine",
  "wgpu",
 ]
 

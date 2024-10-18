@@ -8,3 +8,4 @@ ryo_engine = { path = "../ryo_engine" }
 ryo_ecs = { path = "../ryo_ecs" }
 ryo_window = { path = "../ryo_window" }
 ryo_winit = { path = "../ryo_winit" }
+ryo_wgpu = { path = "../ryo_wgpu" }

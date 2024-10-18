@@ -13,3 +13,7 @@ pub mod winit {
 pub mod window {
     pub use ryo_window::*;
 }
+
+pub mod wgpu {
+    pub use ryo_wgpu::*;
+}
