@@ -1288,6 +1288,7 @@ dependencies = [
 name = "ryo_window"
 version = "0.1.0"
 dependencies = [
+ "raw-window-handle",
  "ryo_engine",
 ]
 
