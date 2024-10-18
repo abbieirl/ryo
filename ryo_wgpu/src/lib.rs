@@ -1,5 +1,3 @@
-use std::borrow::Borrow;
-
 use ryo_engine::{Engine, Module, Resources};
 use ryo_window::WindowManager;
 use wgpu::*;
@@ -23,8 +21,9 @@ impl<'a> WgpuState<'a> {
 
         let window_manager = Resources::get::<WindowManager>().unwrap();
 
-        // Feed window into this
-        let surface_target = unsafe { SurfaceTargetUnsafe::from_window(todo!()).unwrap() };
+        let surface_target = unsafe {
+            SurfaceTargetUnsafe::from_window(&window_manager.0[0].1.clone().unwrap()).unwrap()
+        };
 
         let surface = unsafe { instance.create_surface_unsafe(surface_target) }.unwrap();
 

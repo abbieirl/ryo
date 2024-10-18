@@ -1,5 +1,6 @@
 use ryo_engine::{Engine, Module, Resources};
 use ryo_window::WindowManager;
+use std::sync::Arc;
 use winit::application::ApplicationHandler;
 use winit::event::WindowEvent;
 use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
@@ -23,7 +24,7 @@ impl ApplicationHandler for EngineWrapper {
             .0
             .iter_mut()
             .for_each(|(window, handle)| {
-                *handle = Some(Box::new(
+                *handle = Some(Arc::new(
                     event_loop
                         .create_window(Window::default_attributes().with_title(&window.title))
                         .unwrap(),
