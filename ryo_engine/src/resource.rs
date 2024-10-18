@@ -36,5 +36,3 @@ impl Debug for dyn Resource {
         f.write_str(type_name_of_val(self))
     }
 }
-
-impl Resource for i32 {}
