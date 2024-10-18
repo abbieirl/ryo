@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 wgpu = "22.1.0"
 ryo_engine = { path = "../ryo_engine" }
+ryo_window = { path = "../ryo_window" }

@@ -1,5 +1,6 @@
 use core::any::{type_name_of_val, TypeId};
 use core::fmt::{Debug, Formatter, Result};
+use core::any::Any;
 use std::collections::HashMap;
 use std::sync::{LazyLock, RwLock};
 
@@ -29,7 +30,10 @@ impl Resources {
     }
 }
 
-pub trait Resource: 'static + Send + Sync {}
+pub trait Resource: 'static + Send + Sync {
+    fn as_any(&self) -> &dyn Any;
+    fn as_any_mut(&mut self) -> &mut dyn Any;
+}
 
 impl Debug for dyn Resource {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {

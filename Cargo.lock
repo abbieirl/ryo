@@ -1283,6 +1283,7 @@ name = "ryo_wgpu"
 version = "0.1.0"
 dependencies = [
  "ryo_engine",
+ "ryo_window",
  "wgpu",
 ]
 
