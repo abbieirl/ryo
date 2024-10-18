@@ -5,6 +5,7 @@ use winit::event::WindowEvent;
 use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
 use winit::window::{Window, WindowId};
 
+#[derive(Debug)]
 pub struct WinitModule;
 
 struct EngineWrapper(Engine);
@@ -17,7 +18,9 @@ impl Module for WinitModule {
 
 impl ApplicationHandler for EngineWrapper {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
-        let window_manager = Resources::get_mut::<WindowManager>().unwrap();
+        let _window_manager = Resources::get_mut::<WindowManager>().unwrap();
+
+        // todo!(): push the created window into the window manager
 
         event_loop
             .create_window(Window::default_attributes())
