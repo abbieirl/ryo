@@ -12,6 +12,7 @@ pub struct WinitModule;
 struct EngineWrapper(Engine);
 
 impl Module for WinitModule {
+    #[inline]
     fn build(&self, engine: &mut Engine) {
         engine.set_runner(winit_runner);
     }
@@ -40,7 +41,7 @@ impl ApplicationHandler for EngineWrapper {
     ) {
         match event {
             WindowEvent::CloseRequested => event_loop.exit(),
-            WindowEvent::RedrawRequested => self.0.systems().iter().for_each(|system| system.run()),
+            WindowEvent::RedrawRequested => (),
             _ => (),
         }
     }

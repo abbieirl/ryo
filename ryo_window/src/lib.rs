@@ -1,10 +1,10 @@
-use std::sync::Arc;
+use core::any::Any;
 use raw_window_handle::{HasDisplayHandle, HasWindowHandle};
 use ryo_engine::{Engine, Module, Resource, Resources};
+use std::sync::Arc;
 
-pub trait WindowHandle: HasWindowHandle + HasDisplayHandle {}
-
-impl<T: HasWindowHandle + HasDisplayHandle> WindowHandle for T {}
+pub trait WindowHandle: HasWindowHandle + HasDisplayHandle + Send + Sync {}
+impl<T: HasWindowHandle + HasDisplayHandle + Send + Sync> WindowHandle for T {}
 
 #[derive(Debug, Default)]
 pub struct WindowModule {
@@ -20,14 +20,14 @@ impl WindowModule {
 }
 
 #[derive(Default)]
-pub struct WindowManager(pub Vec<(Window, Option<Arc<dyn WindowHandle + Send + Sync>>)>);
+pub struct WindowManager(pub Vec<(Window, Option<Arc<dyn WindowHandle>>)>);
 
 impl Resource for WindowManager {
-    fn as_any(&self) -> &dyn std::any::Any {
+    fn as_any(&self) -> &dyn Any {
         self
     }
 
-    fn as_any_mut(&mut self) -> &mut dyn std::any::Any {
+    fn as_any_mut(&mut self) -> &mut dyn Any {
         self
     }
 }

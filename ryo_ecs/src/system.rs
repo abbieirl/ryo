@@ -1,16 +1,18 @@
+use crate::world::World;
 use core::any::type_name_of_val;
 use core::fmt::{Debug, Formatter, Result};
 
 pub trait System: 'static {
-    fn run(&self);
+    fn run(&self, world: &World);
 }
 
-impl<T> System for T
+impl<F> System for F
 where
-    T: Fn() + 'static + Send + Sync,
+    F: Fn(&World) + 'static + Send + Sync,
 {
-    fn run(&self) {
-        self()
+    #[inline]
+    fn run(&self, world: &World) {
+        self(world)
     }
 }
 
